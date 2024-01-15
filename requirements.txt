@@ -1,1 +1,5 @@
+fastapi
 gradio
+openai
+langchain
+langchain-openai
