@@ -3,5 +3,8 @@ DS_Store
 .idea
 data
 images
+LLM/Llama-2/tokenizer.model
+LLM/Llama-2/tokenizer_checklist.chk
+LLM/Llama-2/llama-2-7b-chat
 test.ipynb
 playground.py
