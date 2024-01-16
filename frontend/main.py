@@ -1,39 +1,38 @@
 import gradio as gr
 
-from gradio import Row
-# from gpt import predict
+from gradio import Group, Row, Image
+from utils import disable_submit_button, submit, enable_submit_button
+from bots import streaming_bot as bot
 
 
-def respond(message, chat_history):
-    bot_message = "I'm sorry, I don't understand."
-    chat_history.append((message, bot_message))
-    return None, chat_history
+with open('sources/style.css') as file:
+    css = file.read()
 
 
-with gr.Blocks() as demo:
-    with Row():
+with gr.Blocks(css=css) as demo:
+    with Group():
         height = 150
-        gr.Image('ucl-logo.webp', height=height, show_label=False, show_download_button=False, scale=3)
-        gr.Image('dog.webp', height=height, show_label=False, show_download_button=False, scale=1)
-    with gr.Group():
-        chatbot = gr.Chatbot(height=600)
         with Row():
-            msg = gr.Textbox(scale=4)
+            Image('sources/UCL-logo.webp', height=height, show_label=False, show_download_button=False, scale=3)
+            Image('sources/Rocket-logo.png', height=height, show_label=False, show_download_button=False, scale=1)
+
+    with Group():
+        chatbot = gr.Chatbot(value=[(None, "Hi! How can I help you?")], height=600)
+        with Row():
+            message = gr.Textbox(placeholder="Type your question here...", label='Question:', scale=4)
             with gr.Column(scale=1):
                 submit_button = gr.Button('Submit', variant='primary')
-                clear_button = gr.ClearButton(msg)
-    msg.submit(respond, [msg, chatbot], [msg, chatbot])
-    submit_button.click(respond, [msg, chatbot], [msg, chatbot])
+                clear_button = gr.ClearButton(message)
+
+    message.submit(disable_submit_button, outputs=submit_button, queue=False) \
+        .then(submit, [message, chatbot], [message, chatbot], queue=False) \
+        .then(bot, chatbot, chatbot) \
+        .then(enable_submit_button, outputs=submit_button, queue=False)
+    submit_button.click(disable_submit_button, outputs=submit_button, queue=False) \
+        .then(submit, [message, chatbot], [message, chatbot], queue=False) \
+        .then(bot, chatbot, chatbot) \
+        .then(enable_submit_button, outputs=submit_button, queue=False)
 
 
 if __name__ == '__main__':
-    '''
-    gr.ChatInterface(predict,
-                     chatbot=gr.Chatbot([(None, "Hi! How can I help you?")]),
-                     examples=["Hello.", "Hello!", "How are you?"],
-                     title='XOR Assistant',
-                     description="Type your question and get response from the chatbot based on cross-lingual knowledge base!",
-                     retry_btn=None,
-                     undo_btn=None).launch()
-    '''
-    demo.launch()
+    demo.queue().launch()
