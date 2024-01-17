@@ -11,8 +11,8 @@ with open('sources/style.css') as file:
 
 with gr.Blocks(css=css) as demo:
     with Group():
-        height = 150
         with Row():
+            height = 150
             Image('sources/UCL-logo.webp', height=height, show_label=False, show_download_button=False, scale=3)
             Image('sources/Rocket-logo.png', height=height, show_label=False, show_download_button=False, scale=1)
 
