@@ -6,7 +6,9 @@ def disable_submit_button():
 
 
 def submit(message, history):
-    return None, history + [(message, None)]
+    if message is None or message.strip() == "":
+        return None, history
+    return None, history + [(message.strip(), None)]
 
 
 def enable_submit_button():

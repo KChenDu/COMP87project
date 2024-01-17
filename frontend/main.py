@@ -17,7 +17,7 @@ with gr.Blocks(css=css) as demo:
             Image('sources/Rocket-logo.png', height=height, show_label=False, show_download_button=False, scale=1)
 
     with Group():
-        chatbot = gr.Chatbot(value=[(None, "Hi! How can I help you?")], height=600)
+        chatbot = gr.Chatbot([(None, "Hi! How can I help you?")], height=600)
         with Row():
             message = gr.Textbox(placeholder="Type your question here...", label='Question:', scale=4)
             with gr.Column(scale=1):
