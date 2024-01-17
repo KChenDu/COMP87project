@@ -22,7 +22,7 @@ with gr.Blocks(css=css) as demo:
             message = gr.Textbox(placeholder="Type your question here...", label='Question:', scale=4)
             with gr.Column(scale=1):
                 submit_button = gr.Button('Submit', variant='primary')
-                clear_button = gr.ClearButton(message)
+                gr.ClearButton(message)
 
     message.submit(disable_submit_button, outputs=submit_button, queue=False) \
         .then(submit, [message, chatbot], [message, chatbot], queue=False) \
