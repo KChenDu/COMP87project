@@ -3,5 +3,6 @@
 .idea
 images
 LLM/Llama
-test.ipynb
-playground.py
+NLP/milvus-gpu/volumes
+*test.ipynb
+*playground.py
