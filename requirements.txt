@@ -3,3 +3,4 @@ gradio
 openai
 langchain
 langchain-openai
+pymilvus
