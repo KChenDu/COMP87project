@@ -2,7 +2,7 @@
 *DS_Store
 .idea
 images
+DB/milvus-gpu/volumes
 LLM/Llama
-NLP/milvus-gpu/volumes
 *test.ipynb
 *playground.py

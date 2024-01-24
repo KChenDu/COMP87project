@@ -1,6 +1,4 @@
+pandas
+pymilvus
 fastapi
 gradio
-openai
-langchain
-langchain-openai
-pymilvus
