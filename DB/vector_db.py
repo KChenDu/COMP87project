@@ -9,6 +9,13 @@ class MilvusCollection:
         connections.disconnect("default")
         self.__collection_name = name
 
+    def switch_to_collection(self, name: str):
+        connections.connect("default")
+        if not utility.has_collection(name):
+            raise Exception(f"Collection {name} does not exist.")
+        connections.disconnect("default")
+        self.__collection_name = name
+
     def create_partition(self, partition_name: str, description: str = ""):
         connections.connect("default")
         Collection(self.__collection_name).create_partition(partition_name, description)
