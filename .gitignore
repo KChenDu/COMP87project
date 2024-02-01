@@ -4,6 +4,7 @@
 images
 data
 DB/milvus-gpu/volumes
+DB/sqlite
 LLM/Llama
 *test.ipynb
 *playground.py
