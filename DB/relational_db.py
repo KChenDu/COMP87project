@@ -37,7 +37,8 @@ class SQLiteDB:
         conn.commit()
         conn.close()
 
-    def select(self, fields: str, table: str, condition: str | None = None):
+    def select(self, fields: list[str], table: str, condition: str | None = None):
+        fields = ', '.join(fields)
         conn = sqlite3.connect(self.__db_file)
         cur = conn.cursor()
         if condition is None:
