@@ -25,10 +25,15 @@ class SQLiteDB:
         except Error as e:
             print(e)
 
-    def insert(self, table: str, values: str):
+    def insert(self, table: str, values: list):
+        for i, value in enumerate(values):
+            if isinstance(value, str):
+                values[i] = "'" + value.replace("'", "''") + "'"
+            else:
+                values[i] = str(value)
         conn = sqlite3.connect(self.__db_file)
         cur = conn.cursor()
-        cur.execute("INSERT INTO " + table + " VALUES(" + values + ")")
+        cur.execute("INSERT INTO " + table + " VALUES(" + ', '.join(values) + ")")
         conn.commit()
         conn.close()
 

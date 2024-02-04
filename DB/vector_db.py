@@ -1,5 +1,6 @@
 from pymilvus import connections, utility, Collection
 from utility import milvus_collection_exists
+from loguru import logger
 
 
 class MilvusCollection:
@@ -15,7 +16,9 @@ class MilvusCollection:
 
     def create_partition(self, partition_name: str, description: str = ""):
         connections.connect("default")
-        Collection(self.__collection_name).create_partition(partition_name, description)
+        collection_name = self.__collection_name
+        Collection(collection_name).create_partition(partition_name, description)
+        logger.info("Partition <" + partition_name + "> created in collection <" + collection_name + ">.")
         connections.disconnect("default")
 
     def has_partition(self, partition_name: str) -> bool:
