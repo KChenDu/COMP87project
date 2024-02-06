@@ -38,13 +38,12 @@ class SQLiteDB:
         conn.close()
 
     def select(self, fields: list[str], table: str, condition: str | None = None):
-        fields = ', '.join(fields)
         conn = sqlite3.connect(self.__db_file)
         cur = conn.cursor()
         if condition is None:
-            cur.execute("SELECT " + fields + " FROM " + table)
+            cur.execute("SELECT " + ', '.join(fields) + " FROM " + table)
         else:
-            cur.execute("SELECT " + fields + " FROM " + table + " WHERE " + condition)
+            cur.execute("SELECT " + ', '.join(fields) + " FROM " + table + " WHERE " + condition)
         rows = cur.fetchall()
         conn.close()
         return rows

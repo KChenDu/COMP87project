@@ -18,7 +18,7 @@ def create_milvus_collection(name: str = "test"):
         collection.create_index(field, index_params)
 
     connections.disconnect("default")
-    logger.info("Collection <" + name + "> created.")
+    logger.info("Collection <" + name + "> created")
 
 
 def milvus_collection_exists(name: str = "test") -> bool:
@@ -30,9 +30,13 @@ def milvus_collection_exists(name: str = "test") -> bool:
 
 def drop_milvus_collection(name: str = "test"):
     connections.connect("default")
+    if not utility.has_collection(name):
+        connections.disconnect("default")
+        raise Exception("Collection <" + name + "> does not exist.")
+    logger.info("Dropping collection <" + name + '>')
     utility.drop_collection(name)
     connections.disconnect("default")
-    logger.info("Collection <" + name + "> dropped.")
+    logger.info("Collection <" + name + "> dropped")
 
 
 def create_sqlite_db(name: str = "test"):
@@ -45,7 +49,7 @@ def create_sqlite_db(name: str = "test"):
         conn.close()
     except Error as e:
         raise Exception(e)
-    logger.info("Database <" + name + "> created.")
+    logger.info("Database <" + name + "> created")
 
 
 def sqlite_db_exists(name: str = "test") -> bool:
@@ -58,5 +62,6 @@ def drop_sqlite_db(name: str = "test"):
     db_file = Path("sqlite/" + name + ".db")
     if not db_file.is_file():
         raise Exception("Database <" + name + "> does not exist.")
+    logger.info("Dropping database <" + name + '>')
     Path.unlink(db_file)
-    logger.info("Database <" + name + "> dropped.")
+    logger.info("Database <" + name + "> dropped")
