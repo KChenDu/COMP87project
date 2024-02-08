@@ -41,7 +41,7 @@ if __name__ == '__main__':
     # Embed all keywords and insert into vector DB
     if not milvus_collection_exists(collection_name):
         create_milvus_collection(collection_name)
-    collection = MilvusCollection()
+    collection = MilvusCollection(collection_name)
     if not collection.has_partition(language):
         collection.create_partition(language)
 

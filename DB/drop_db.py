@@ -11,8 +11,6 @@ if __name__ == '__main__':
     db_type = args.db_type
 
     if db_type == 'vector':
-        db_name = args.db_name
-        drop_milvus_collection(db_name)
+        drop_milvus_collection(args.db_name)
     elif db_type == 'relational':
-        db_name = args.db_name
-        drop_sqlite_db(db_name)
+        drop_sqlite_db(args.db_name)

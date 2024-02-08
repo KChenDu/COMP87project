@@ -1,3 +1,0 @@
-[submodule "LLM/llama"]
-	path = LLM/llama
-	url = git@github.com:facebookresearch/llama.git
