@@ -5,16 +5,16 @@ from sqlite3 import Error
 
 
 class SQLiteDB:
-    def __init__(self, name: str = "test"):
-        db_file = Path("sqlite/" + name + ".db")
+    def __init__(self, path: str = "test"):
+        db_file = Path(path + ".db")
         if not db_file.is_file():
-            raise Exception(f"Database " + name + " does not exist.")
+            raise Exception("Database " + path + " does not exist.")
         self.__db_file = db_file
 
     def switch_to_db(self, name: str):
         db_file = Path("sqlite/" + name + ".db")
         if not db_file.is_file():
-            raise Exception(f"Database " + name + " does not exist.")
+            raise Exception("Database " + name + " does not exist.")
         self.__db_file = db_file
 
     def create_table(self, name: str, fields: str):

@@ -44,7 +44,7 @@ class MilvusCollection:
         Collection(self.__collection_name).drop_partition(partition_name)
         connections.disconnect("default")
 
-    def search(self, data: list[float], anns_field: str, param: dict, limit: int, expr: str | None = None, partition_names: list[str] | None = None, output_fields: list[str] | None = None):
+    def search(self, data: list[list[float]], anns_field: str, param: dict, limit: int, expr: str | None = None, partition_names: list[str] | None = None, output_fields: list[str] | None = None):
         collection_name = self.__collection_name
         connections.connect("default")
         collection = Collection(collection_name)
