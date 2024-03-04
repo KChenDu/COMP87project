@@ -1,3 +1,5 @@
+import fasttext
+
 from argparse import ArgumentParser
 from pathlib import Path
 from json import load
@@ -5,6 +7,7 @@ from loguru import logger
 from utility import milvus_collection_exists, create_milvus_collection
 from vector_db import MilvusCollection
 from towhee import AutoConfig, AutoPipes
+from tqdm import tqdm
 
 
 if __name__ == '__main__':
@@ -32,9 +35,9 @@ if __name__ == '__main__':
     for datum in data:
         for keyword in datum['keywords']:
             if keyword in keyword2context:
-                keyword2context[keyword].append(datum['context_id'])
+                keyword2context[keyword].append(datum['id'])
             else:
-                keyword2context[keyword] = [datum['context_id']]
+                keyword2context[keyword] = [datum['id']]
 
     logger.debug("Keyword-to-contexts mapping created")
 
@@ -45,15 +48,25 @@ if __name__ == '__main__':
     if not collection.has_partition(language):
         collection.create_partition(language)
 
-    logger.debug("Populating partition <" + language + '> in collection <' + collection_name + '>')
+    logger.debug("Populating partition <" + language + "> in collection <" + collection_name + '>')
 
-    config = AutoConfig.load_config('sentence_embedding')
-    config.model = 'average_word_embeddings_glove.6B.300d'
-    sentence_embedding = AutoPipes.pipeline('sentence_embedding', config=config)
+    if language == 'en':
+        config = AutoConfig.load_config('sentence_embedding')
+        config.model = 'average_word_embeddings_glove.6B.300d'
+        sentence_embedding = AutoPipes.pipeline('sentence_embedding', config=config)
 
-    keywords = list(keyword2context.keys())
-    collection.insert([keywords,
-                       [embedding.get()[0] for embedding in sentence_embedding.batch(keywords)],
-                       list(keyword2context.values())], language)
+        keywords = list(keyword2context.keys())
+        collection.insert([keywords,
+                           [embedding.get()[0] for embedding in sentence_embedding.batch(keywords)],
+                           list(keyword2context.values())], language)
+    elif language == 'zh':
+        ft = fasttext.load_model('../data/cc.zh.300.bin')
+
+        for keyword, contexts in tqdm(keyword2context.keys()):
+            collection.insert([[keyword],
+                               [ft.get_word_vector(keyword)],
+                               [contexts]], language)
+    else:
+        raise NotImplementedError
 
     logger.debug("Partition <" + language + "> in collection <" + collection_name + "> populated")

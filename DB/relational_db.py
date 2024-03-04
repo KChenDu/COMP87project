@@ -6,7 +6,7 @@ from sqlite3 import Error
 
 class SQLiteDB:
     def __init__(self, path: str = "test"):
-        db_file = Path(path + ".db")
+        db_file = Path("sqlite/" + path + ".db")
         if not db_file.is_file():
             raise Exception("Database " + path + " does not exist.")
         self.__db_file = db_file

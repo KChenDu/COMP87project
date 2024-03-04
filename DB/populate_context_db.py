@@ -8,7 +8,8 @@ from loguru import logger
 
 if __name__ == '__main__':
     parser = ArgumentParser()
-    parser.add_argument('language', choices=['en'])
+    parser.add_argument('db_name')
+    parser.add_argument('language', choices=['en', 'zh'])
     parser.add_argument('data_path')
     args = parser.parse_args()
 
@@ -17,15 +18,18 @@ if __name__ == '__main__':
         data = load(f)
 
     # Connect to the database, if it does not exist, create it
-    if not sqlite_db_exists('context'):
-        create_sqlite_db('context')
+
+    db_name = args.db_name
+
+    if not sqlite_db_exists(db_name):
+        create_sqlite_db(db_name)
     language = args.language
-    db = SQLiteDB('context')
+    db = SQLiteDB(db_name)
     db.create_table(language, TABEL2FIELD['context'])
 
-    logger.debug("Populating table <" + language + "> in database <context>")
+    logger.debug("Populating table <" + language + "> in database <" + db_name + '>')
 
     for datum in data:
         db.insert(language, [datum['id'], datum['context']])
 
-    logger.debug("Populated table <" + language + "> in database <context>")
+    logger.debug("Populated table <" + language + "> in database <" + db_name + '>')

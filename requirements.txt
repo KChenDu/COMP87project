@@ -2,5 +2,6 @@ pandas
 loguru
 pymilvus
 towhee
+fasttext
 fastapi
 gradio
