@@ -10,14 +10,16 @@ with open('sources/style.css') as file:
 
 
 with gr.Blocks(css=css) as demo:
-    with Group():
-        with Row():
-            height = 150
-            Image('sources/UCL-logo.webp', height=height, show_label=False, show_download_button=False, scale=3)
-            Image('sources/mix.png', height=height, show_label=False, show_download_button=False, scale=1)
+    # with Group():
+    #     with Row():
+    #         height = 150
+    #         Image('sources/UCL-logo.webp', height=height, show_label=False, show_download_button=False, scale=3)
+    #         Image('sources/mix.png', height=height, show_label=False, show_download_button=False, scale=1)
+
+    Image('sources/logo.png', height=300, show_label=False, show_download_button=False)
 
     with Group():
-        chatbot = gr.Chatbot([(None, "Hi! How can I help you?")], height=600)
+        chatbot = gr.Chatbot([(None, "Hi! How can I help you?")], height=450)
         with Row():
             message = gr.Textbox(placeholder="Type your question here...", label='Question:', scale=4)
             with gr.Column(scale=1):
